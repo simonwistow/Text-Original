@@ -21,7 +21,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw( first_lines first_paragraph first_sentence) 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '1.3';
+our $VERSION = '1.4';
 
 =head2 first_lines
 
@@ -172,14 +172,16 @@ All of the above.
 
 =head1 AUTHOR
 
-Richard Clamp and the Mariachi project.
+Simon Wistow and the Mariachi project.
 See http://siesta.unixbeard.net/
 
 Packaged by Simon Cozens
 
+Currently maintained by Simon Wistow <simon@thegestalt.org>
+
 =head1 COPYRIGHT
 
-Copyright 2003 The Siesta Project
+Copyright 2004 The Siesta Project
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
