@@ -1,6 +1,9 @@
 Revision history for Perl extension Text::Original.
 
+1.1   Tue Sep  9 15:19:13 BST 2003
+    - use Text::Quoted to zap quoted stuff.
 0.01  Tue Aug 12 15:23:43 2003
 	- original version; created by h2xs 1.22 with options
 		-AX -b 5.6.0 -n Text::Original
 
+For further details see http://cvs.simon-cozens.org/

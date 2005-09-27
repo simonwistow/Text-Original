@@ -1,6 +1,7 @@
 package Text::Original;
 use 5.006; use strict; use warnings;
 use Memoize;
+use Text::Quoted;
 
 =head1 NAME
 
@@ -21,7 +22,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw( first_lines first_paragraph first_sentence) 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 =head2 first_lines
 
@@ -71,6 +72,14 @@ sub first_sentence {
     return $text;
 }
 
+# Use Text::Quoted to extract and throw away quoted text
+sub _unquote { 
+    map { $_->{raw} ? split /$/m, $_->{raw} : "\n" }
+        # Keep blanks for para divisions
+    grep { ref $_ eq "HASH" }
+    @{ extract(shift) };
+}
+
 sub _significant_signal {
     my $text = shift;
     my %opts = @_;
@@ -79,7 +88,7 @@ sub _significant_signal {
     my $lines  = 0;
 
     # get all the lines from the main part of the body
-    my @lines = split /$/m, $text;
+    my @lines = _unquote($text);
 
     # right, find the start of the original content or quoted
     # content (i.e. skip past the attributation)
