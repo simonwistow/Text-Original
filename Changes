@@ -1,0 +1,6 @@
+Revision history for Perl extension Text::Original.
+
+0.01  Tue Aug 12 15:23:43 2003
+	- original version; created by h2xs 1.22 with options
+		-AX -b 5.6.0 -n Text::Original
+
