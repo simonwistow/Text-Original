@@ -1,7 +1,6 @@
 package Text::Original;
 use 5.006; use strict; use warnings;
 use Memoize;
-use Text::Quoted;
 
 =head1 NAME
 
@@ -22,7 +21,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw( first_lines first_paragraph first_sentence) 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
 =head2 first_lines
 
@@ -72,13 +71,10 @@ sub first_sentence {
     return $text;
 }
 
-# Use Text::Quoted to extract and throw away quoted text
-sub _unquote { 
-    map { $_->{raw} ? split /$/m, $_->{raw} : "\n" }
-        # Keep blanks for para divisions
-    grep { ref $_ eq "HASH" }
-    @{ extract(shift) };
-}
+# Kudos to Damian Conway for this bit.
+my $quotechar = qq{[!#%=|:]};
+my $quotechunk = qq{(?:$quotechar(?![a-z])|[a-z]*>+)};
+my $quoter = qq{(?:(?i)(?:$quotechunk(?:[ \\t]*$quotechunk)*))};
 
 sub _significant_signal {
     my $text = shift;
@@ -88,7 +84,7 @@ sub _significant_signal {
     my $lines  = 0;
 
     # get all the lines from the main part of the body
-    my @lines = _unquote($text);
+    my @lines = split /$/m, $text;
 
     # right, find the start of the original content or quoted
     # content (i.e. skip past the attributation)
@@ -102,8 +98,12 @@ sub _significant_signal {
         next if /^\s*$/;
         # quotes (we don't count quoted From's)
         next if /^\s*>(?!From)/;
+        # Other kinds of quoter:
+        next if /^\s*$quoter/;
         # skip obvious attribution
         next if /^\s*On (Mon|Tue|Wed|Thu|Fri|Sat|Sun)/i;
+        next if /\d{4}-?\w{2,3}-?\d{2}.*\d+:\d+:\d+/i; # Looks like a date
+        next if /^\w+(\s\w+)?:$/; # lathos' minimalist attributions. :)
         next if /^\s*.+=? wrote:/i;
 
         # skip signed messages
