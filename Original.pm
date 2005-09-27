@@ -21,7 +21,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw( first_lines first_paragraph first_sentence) 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 =head2 first_lines
 
@@ -67,7 +67,7 @@ Returns the first original sentence of the message
 
 sub first_sentence {
     my $text = first_paragraph(shift);
-    $text =~ s/([.?!]).*/$1/s;
+    $text =~ s/([.?!]) .*/$1/s; 
     return $text;
 }
 
