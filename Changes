@@ -1,5 +1,8 @@
 Revision history for Perl extension Text::Original.
 
+1.5   Fri Aug 17 10:27:05 PDT 2012
+    - Make the module less Anglo-centric when it comes to punctuation 
+
 1.4   Thu Oct 14 19:16:20 BST 2004
     - Take over maintainership from Simon Cozens
 
